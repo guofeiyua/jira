@@ -3,11 +3,14 @@ import ReactDOM from "react-dom";
 import "./index.css";
 import { Login } from "./pages/login";
 import reportWebVitals from "./reportWebVitals";
-import { DevTools, loadServer } from "jira-dev-tool";
-loadServer(() =>
+import { loadDevTools } from "jira-dev-tool";
+import { AppProviders } from "./context";
+loadDevTools(() =>
   ReactDOM.render(
     <React.StrictMode>
-      <Login />
+      <AppProviders>
+        <Login />
+      </AppProviders>
     </React.StrictMode>,
     document.getElementById("root")
   )
