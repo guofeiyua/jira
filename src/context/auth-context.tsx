@@ -7,7 +7,7 @@ export interface AuthForm {
 }
 
 const AuthContext = React.createContext<
-  | {
+  { 
       user: User | null;
       login: (form: AuthForm) => Promise<void>;
       logout: () => Promise<void>;

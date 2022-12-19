@@ -1,15 +1,15 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import "./index.css";
-import { Login } from "./pages/login";
 import reportWebVitals from "./reportWebVitals";
 import { loadDevTools } from "jira-dev-tool";
 import { AppProviders } from "./context";
+import App from './App';
 loadDevTools(() =>
   ReactDOM.render(
     <React.StrictMode>
       <AppProviders>
-        <Login />
+        <App />
       </AppProviders>
     </React.StrictMode>,
     document.getElementById("root")
