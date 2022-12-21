@@ -1,5 +1,5 @@
 import { User } from "models/user";
-import React, { ReactNode, useEffect, useState } from "react";
+import React, { ReactNode, useCallback, useEffect, useState } from "react";
 import * as auth from "auth-provider";
 import { http } from "utils/http";
 import { useMount } from "utils";
@@ -35,9 +35,9 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const register = (form: AuthForm) =>
     auth.register(form).then((user) => setUser(user));
   const logout = () => auth.logout().then(() => setUser(null));
-  useMount(() => {
+  useMount(useCallback(() => {
     bootstrapUser().then(setUser)
-  })
+  }, []))
 
   return (
     <AuthContext.Provider

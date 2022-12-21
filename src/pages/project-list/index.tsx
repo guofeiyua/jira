@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { SearchPanel } from "pages/project-list/search-panel";
 import { List } from "pages/project-list/list";
+import styled from '@emotion/styled';
 const apiUrl = process.env.REACT_APP_API_URL
 export const ProjectListScreen = () => {
   const [list, setList] = useState([])
@@ -14,7 +15,7 @@ export const ProjectListScreen = () => {
         setList(await response.json())
       }
     })
-  })
+  }, [])
   useEffect(() => {
     fetch(`${apiUrl}/users`).then(async response => {
       if (response.ok) {
@@ -23,9 +24,14 @@ export const ProjectListScreen = () => {
     })
   }, [])
   return (
-    <div>
+    <Container>
+      <h1>项目列表</h1>
       <SearchPanel users={users || []} param={param} setParam={setParam} />
       <List users={users || []} list={list || []} />
-    </div>
+    </Container>
   )
 }
+const Container = styled.div`
+  padding: 3.2rem;
+  height: 100%;
+`
