@@ -6,7 +6,6 @@ const localStorageKey = "__auth__provider_token";
 export const getToken = () => localStorage.getItem(localStorageKey);
 
 export const handleUserResponse = ({user }: {user: User}) => {
-  debugger;
   localStorage.setItem(localStorageKey, user.token || "");
   return user;
 };

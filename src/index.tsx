@@ -1,8 +1,8 @@
 import React from "react";
 import ReactDOM from "react-dom";
-import "./index.css";
 import reportWebVitals from "./reportWebVitals";
 import { loadDevTools } from "jira-dev-tool";
+import 'antd/dist/reset.css';
 import { AppProviders } from "./context";
 import App from './App';
 loadDevTools(() =>
