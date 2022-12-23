@@ -5,7 +5,7 @@ import { ProjectListScreen } from 'pages/project-list';
 import styled from '@emotion/styled';
 import { Row } from 'components/lib';
 import { ReactComponent as SoftwareLogo } from 'assets/software-logo.svg'
-import { Dropdown, Menu, MenuProps } from 'antd';
+import { Button, Dropdown, Menu, MenuProps } from 'antd';
 export const AuthenticatedApp = () => {
   const { logout, user } = useAuth() 
   const items: MenuProps['items'] = [
@@ -13,7 +13,7 @@ export const AuthenticatedApp = () => {
       key: 'logout',
       label: (
         <Menu.Item key={'logout'}>
-          <a onClick={logout}>登出</a>
+          <Button type='link' onClick={logout}>登出</Button>
         </Menu.Item>
       ),
     }]
@@ -26,9 +26,9 @@ export const AuthenticatedApp = () => {
       </HeaderLeft>
       <HeaderRight>
       <Dropdown menu={{items}}>
-        <a onClick={e => e.preventDefault()}>
+        <Button type={'link'} onClick={e => e.preventDefault()}>
           Hi,{user?.name}
-        </a>
+        </Button>
       </Dropdown>
       </HeaderRight>
     </PageHeader>
