@@ -2,10 +2,15 @@
 import React from 'react';
 import { useAuth } from 'context/auth-context';
 import { ProjectListScreen } from 'pages/project-list';
+import { ProjectScreen } from 'pages/project';
 import styled from '@emotion/styled';
 import { Row } from 'components/lib';
 import { ReactComponent as SoftwareLogo } from 'assets/software-logo.svg'
 import { Button, Dropdown, Menu, MenuProps } from 'antd';
+import { Navigate, Route, Routes } from 'react-router';
+import { BrowserRouter as Router } from "react-router-dom";
+import { resetRoute } from 'utils';
+
 export const AuthenticatedApp = () => {
   const { logout, user } = useAuth() 
   const items: MenuProps['items'] = [
@@ -20,7 +25,10 @@ export const AuthenticatedApp = () => {
   return <div>
     <PageHeader>
       <HeaderLeft  gap={true}>
-        <SoftwareLogo width={'18rem'} color='rgb(38, 132, 255)' />
+        <Button type='link' onClick={resetRoute}>
+          <SoftwareLogo width={'18rem'} color='rgb(38, 132, 255)' />
+        </Button>
+        
         <h2>项目</h2>
         <h2>用户</h2>
       </HeaderLeft>
@@ -33,7 +41,14 @@ export const AuthenticatedApp = () => {
       </HeaderRight>
     </PageHeader>
     <Main>
-      <ProjectListScreen/>
+      <Router>
+        <Routes>
+          <Route path={"/projects"} element={<ProjectListScreen />} />
+          <Route path={"/projects/:projectId/*"} element={<ProjectScreen />} />
+          <Route path='*' element={<Navigate to={'/projects'} />}></Route>
+        </Routes>
+      </Router>
+      
     </Main>
   </div>
 }
@@ -54,3 +69,5 @@ const PageHeader = styled.header`
 const Main = styled.main`
   height: calc(100vh - 6rem)
 `
+
+AuthenticatedApp.whyDidYouRender = true

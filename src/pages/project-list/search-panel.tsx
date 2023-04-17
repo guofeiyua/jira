@@ -1,13 +1,11 @@
 import React, { ChangeEvent } from "react";
 import { Form, Input, Select } from "antd";
 import { User } from 'models/user';
+import { Project } from "./list";
 
 interface SearchPanelProps {
   users: User[];
-  param: {
-    name: string;
-    personId: string;
-  };
+  param: Pick<Project, 'name' | 'personId'>;
   setParam: (param: SearchPanelProps["param"]) => void;
 }
 export const SearchPanel = ({ users, param, setParam }: SearchPanelProps) => {
@@ -30,15 +28,18 @@ export const SearchPanel = ({ users, param, setParam }: SearchPanelProps) => {
         <Select
             value={param.personId}
             onChange={(value) =>
-              setParam({
-                ...param,
-                personId: value,
-              })
+              {
+                console.log(param.personId, '=========')
+                setParam({
+                  ...param,
+                  personId: value,
+                })
+              }
             }
           >
-            <Select.Option value={""}>负责人</Select.Option>
+            <Select.Option value={" "}>负责人</Select.Option>
             {users.map((user) => (
-              <Select.Option key={user.id} value={user.id}>
+              <Select.Option key={user.id} value={String(user.id)}>
                 {user.name}
               </Select.Option>
             ))}
