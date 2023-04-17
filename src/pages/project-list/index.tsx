@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { SearchPanel } from "pages/project-list/search-panel";
 import { List } from "pages/project-list/list";
 import styled from '@emotion/styled';

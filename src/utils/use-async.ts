@@ -1,4 +1,5 @@
-import { useState } from 'react';
+import { useMountedRef } from './index';
+import { useCallback, useState } from 'react';
 interface State<D> {
   data: D | null;
   error: Error | null;
@@ -14,32 +15,35 @@ export const useAsync = <D>(initState?: State<D>) => {
     ...defaultInitialState,
     ...initState
   })
-  const setData = (data: D) => setState({
+  const setData = useCallback((data: D) => setState({
     data,
     error: null,
     stat: 'success'
-  })
-  const setError = (error: Error) => setState({
+  }), [])
+  const setError = useCallback((error: Error) => setState({
     error,
     data: null,
     stat: 'error'
-  })
-  const run = (promise: Promise<D>) => {
+  }), [])
+  const mountedRef = useMountedRef()
+  const run = useCallback((promise: Promise<D>) => {
     if (!promise || !promise.then) {
       throw new Error('请传入Promise类型数据')
     }
-    setState({
-      ...state,
+    // setState的函数式赋值
+    setState(prevState => ({
+      ...prevState,
       stat: 'loading'
-    })
+    }))
     return promise.then(data => {
+      if (mountedRef.current)
       setData(data)
       return data
     }).catch(error => {
       setError(error)
       return error
     })
-  }
+  }, [setData, setError, mountedRef])
   return {
     isIdle: state.stat === 'idle',
     isError: state.stat === 'error',
