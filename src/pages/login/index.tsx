@@ -1,6 +1,6 @@
 import { useAuth } from "context/auth-context";
 import React, { FormEvent } from "react";
-const url = process.env.REACT_APP_API_URL;
+// const url = process.env.REACT_APP_API_URL;
 export const Login = () => {
   const { user, login } = useAuth();
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {

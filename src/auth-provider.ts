@@ -5,7 +5,7 @@ const apiUrl = process.env.REACT_APP_API_URL;
 const localStorageKey = "__auth__provider_token";
 export const getToken = () => localStorage.getItem(localStorageKey);
 
-export const handleUserResponse = (user: User) => {
+export const handleUserResponse = ({ user }: { user: User }) => {
   window.localStorage.setItem(localStorageKey, user.token || "");
   return user;
 };
@@ -18,8 +18,6 @@ export const login = (data: { username: string; password: string }) => {
     body: JSON.stringify(data),
   }).then(async (response) => {
     if (response.ok) {
-      console.log(response.json(), "---");
-
       return handleUserResponse(await response.json());
     } else {
       return Promise.reject(await response.json());
