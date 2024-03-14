@@ -1,34 +1,38 @@
 import React from "react";
 import { SearchPanel } from "pages/project-list/search-panel";
 import { List } from "pages/project-list/list";
-import styled from '@emotion/styled';
+import styled from "@emotion/styled";
 import { useDebounce, useDocumentTitle } from "utils";
 import { Typography } from "antd";
 import { useProject } from "utils/project";
 import { useUsers } from "utils/user";
-import { useUrlQueryParam } from "utils/url";
+import { useProjectsSearchParams } from "./util";
 
 export const ProjectListScreen = () => {
-  const [param, setParam] = useUrlQueryParam(['name', 'personId'])
-  const users = useUsers()
-  const debouncedParam = useDebounce(param, 200)
-  const {error, data: list, isLoading } = useProject(debouncedParam)
-  
-  useDocumentTitle('项目列表')
-  
+  // 基本类型可以放到依赖里，组件状态可以放到依赖里，非组件状态的对象不可以放到依赖里，会导致无限循环
+  const [param, setParam] = useProjectsSearchParams();
+  const users = useUsers();
+  const debouncedParam = useDebounce(param, 200);
+  const { error, data: list, isLoading } = useProject(debouncedParam);
+
+  useDocumentTitle("项目列表", false);
+
   return (
     <Container>
-      {error ? <Typography.Text type='danger'>{error.message}</Typography.Text> : ''}
+      {error ? (
+        <Typography.Text type="danger">{error.message}</Typography.Text>
+      ) : (
+        ""
+      )}
       <h1>项目列表</h1>
-
       <SearchPanel users={users || []} param={param} setParam={setParam} />
       <List users={users || []} dataSource={list || []} loading={isLoading} />
     </Container>
-  )
-}
+  );
+};
 const Container = styled.div`
   padding: 3.2rem;
   height: 100%;
-`
+`;
 
-ProjectListScreen.whyDidYouRender = true
+ProjectListScreen.whyDidYouRender = false;

@@ -1,13 +1,13 @@
 import React from "react";
 import { Table, TableProps } from "antd";
-import { User } from 'models/user'
-import dayjs from 'dayjs'
+import { User } from "models/user";
+import dayjs from "dayjs";
 import { Link } from "react-router-dom";
 
 export interface Project {
-  id: string;
+  id: number;
   name: string;
-  personId: string;
+  personId: number;
   pin: boolean;
   organization: string;
   created: number;
@@ -18,50 +18,50 @@ interface ListProps extends TableProps<Project> {
 }
 
 export const List = ({ users, ...props }: ListProps) => {
-  return (    <Table
-    pagination={false}
-    rowKey={'id'}
-    columns={[
-      {
-        title: "名称",
-        render(value, project) {
-          return (
-            <Link to={String(project.id)}>{project.name}</Link>
-          );
+  return (
+    <Table
+      pagination={false}
+      rowKey={"id"}
+      columns={[
+        {
+          title: "名称",
+          render(value, project) {
+            return <Link to={String(project.id)}>{project.name}</Link>;
+          },
+          sorter: (a, b) => a.name.localeCompare(b.name),
         },
-        sorter: (a, b) => a.name.localeCompare(b.name),
-      },
-      {
-        title: "部门",
-        key: 'organization',
-        dataIndex: "organization",
-      },
-      {
-        title: "负责人",
-        key: 'personId',
-        render(value, project) {
-          return (
-            <span>
-              {users.find((user) => user.id === project.personId)?.name ||
-                "未知"}
-            </span>
-          );
+        {
+          title: "部门",
+          key: "organization",
+          dataIndex: "organization",
         },
-      },
-      {
-        title: "创建时间",
-        key: 'created',
-        render(value, project) {
-
-          return (
-            <span>
-              {project.created ? dayjs(project.created).format('YYYY-MM-DD') : '无' }
-            </span>
-          );
+        {
+          title: "负责人",
+          key: "personId",
+          render(value, project) {
+            return (
+              <span>
+                {users.find((user) => user.id === project.personId)?.name ||
+                  "未知"}
+              </span>
+            );
+          },
         },
-      },
-    ]}
-    {...props}
-  />
-);
+        {
+          title: "创建时间",
+          key: "created",
+          render(value, project) {
+            return (
+              <span>
+                {project.created
+                  ? dayjs(project.created).format("YYYY-MM-DD")
+                  : "无"}
+              </span>
+            );
+          },
+        },
+      ]}
+      {...props}
+    />
+  );
 };
