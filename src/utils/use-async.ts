@@ -36,6 +36,7 @@ export const useAsync = <D>(initState?: State<D>) => {
 
   // retry保存下上次的网络请求，方便其他地方调用
   const [retry, setRetry] = useState(() => () => {});
+  // 查看组件是否已被卸载，防止在卸载的组件赋值
   const mountedRef = useMountedRef();
   const run = useCallback(
     (promise: Promise<D>, config?: { retryFun: () => Promise<D> }) => {
@@ -53,13 +54,19 @@ export const useAsync = <D>(initState?: State<D>) => {
         ...prevState,
         stat: "loading",
       }));
+
       return promise
         .then((data) => {
-          if (mountedRef.current) setData(data);
+          console.log(mountedRef.current, "mountedRef.current");
+          if (mountedRef.current) {
+            setData(data);
+          }
           return data;
         })
         .catch((error) => {
-          setError(error);
+          if (mountedRef.current) {
+            setError(error);
+          }
           return error;
         });
     },
