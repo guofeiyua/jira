@@ -8,14 +8,16 @@ import { useProject } from "utils/project";
 import { useUsers } from "utils/user";
 import { useProjectsSearchParams } from "./util";
 import { Row } from "components/lib";
+import { useDispatch } from "react-redux";
+import { openProjectModel } from "store/project-list.slice";
 
-export const ProjectListScreen = (props: { openModel: () => void }) => {
+export const ProjectListScreen = () => {
   // 基本类型可以放到依赖里，组件状态可以放到依赖里，非组件状态的对象不可以放到依赖里，会导致无限循环
   const [param, setParam] = useProjectsSearchParams();
   const users = useUsers();
   const debouncedParam = useDebounce(param, 200);
   const { error, data: list, isLoading, retry } = useProject(debouncedParam);
-
+  const dispatch = useDispatch();
   useDocumentTitle("项目列表", false);
 
   return (
@@ -27,7 +29,7 @@ export const ProjectListScreen = (props: { openModel: () => void }) => {
       )}
       <Row between={true}>
         <h1>项目列表</h1>
-        <Button onClick={() => props.openModel()}>创建项目</Button>
+        <Button onClick={() => dispatch(openProjectModel())}>创建项目</Button>
       </Row>
       <SearchPanel users={users || []} param={param} setParam={setParam} />
       <List

@@ -1,18 +1,22 @@
 import { Button, Drawer } from "antd";
 import React from "react";
-interface ProjectModelProps {
-  open: boolean;
-  onClose: (open: boolean) => void;
-}
-export const ProjectModel = (props: ProjectModelProps) => {
+import { useDispatch, useSelector } from "react-redux";
+import {
+  closeProjectModel,
+  selectorProjectOpenModel,
+} from "store/project-list.slice";
+
+export const ProjectModel = () => {
+  const dispatch = useDispatch();
+  const modelVisible = useSelector(selectorProjectOpenModel);
   return (
     <Drawer
       width={"100%"}
       title="Basic Drawer"
-      onClose={() => props.onClose(false)}
-      open={props.open}
+      onClose={() => dispatch(closeProjectModel())}
+      open={modelVisible}
     >
-      <Button onClick={() => props.onClose(false)}>关闭</Button>
+      <Button onClick={() => dispatch(closeProjectModel())}>关闭</Button>
     </Drawer>
   );
 };

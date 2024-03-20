@@ -3,7 +3,11 @@ import { Divider, List, Popover, Typography } from "antd";
 import React from "react";
 import { useProject } from "utils/project";
 import { ButtonNoPadding } from "./lib";
-export const ProjectPopover = (props: { openModel: () => void }) => {
+import { useDispatch } from "react-redux";
+import { openProjectModel } from "store/project-list.slice";
+
+export const ProjectPopover = () => {
+  const dispatch = useDispatch();
   const { data: projects } = useProject();
   const pinnedProjects = projects?.filter((project) => project.pin);
   const content = (
@@ -17,7 +21,10 @@ export const ProjectPopover = (props: { openModel: () => void }) => {
         ))}
       </List>
       <Divider />
-      <ButtonNoPadding onClick={() => props.openModel()} type={"link"}>
+      <ButtonNoPadding
+        onClick={() => dispatch(openProjectModel())}
+        type={"link"}
+      >
         创建项目
       </ButtonNoPadding>
     </ContentContainer>

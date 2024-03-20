@@ -1,5 +1,5 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
-import React, { useState } from "react";
+import React from "react";
 import { useAuth } from "context/auth-context";
 import { ProjectListScreen } from "pages/project-list";
 import { ProjectScreen } from "pages/project";
@@ -15,7 +15,7 @@ import { ProjectPopover } from "./components/project-popover";
 
 export const AuthenticatedApp = () => {
   const { logout, user } = useAuth();
-  const [modelVisible, setModelVisible] = useState(false);
+
   const items: MenuProps["items"] = [
     {
       key: "logout",
@@ -36,9 +36,7 @@ export const AuthenticatedApp = () => {
             <SoftwareLogo width={"18rem"} color="rgb(38, 132, 255)" />
           </Button>
 
-          <ProjectPopover
-            openModel={() => setModelVisible(true)}
-          ></ProjectPopover>
+          <ProjectPopover></ProjectPopover>
           <span>用户</span>
         </HeaderLeft>
         <HeaderRight>
@@ -52,12 +50,7 @@ export const AuthenticatedApp = () => {
       <Main>
         <Router>
           <Routes>
-            <Route
-              path={"/projects"}
-              element={
-                <ProjectListScreen openModel={() => setModelVisible(true)} />
-              }
-            />
+            <Route path={"/projects"} element={<ProjectListScreen />} />
             <Route
               path={"/projects/:projectId/*"}
               element={<ProjectScreen />}
@@ -65,10 +58,7 @@ export const AuthenticatedApp = () => {
             <Route path="*" element={<Navigate to={"/projects"} />}></Route>
           </Routes>
         </Router>
-        <ProjectModel
-          open={modelVisible}
-          onClose={setModelVisible}
-        ></ProjectModel>
+        <ProjectModel></ProjectModel>
       </Main>
     </div>
   );
