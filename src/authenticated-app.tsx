@@ -15,7 +15,6 @@ import { ProjectPopover } from "./components/project-popover";
 
 export const AuthenticatedApp = () => {
   const { logout, user } = useAuth();
-  const [modelVisible, setModelVisible] = useState(false);
   const items: MenuProps["items"] = [
     {
       key: "logout",
@@ -30,46 +29,36 @@ export const AuthenticatedApp = () => {
   ];
   return (
     <div>
-      <PageHeader>
-        <HeaderLeft gap={true}>
-          <Button type="link" onClick={resetRoute}>
-            <SoftwareLogo width={"18rem"} color="rgb(38, 132, 255)" />
-          </Button>
-
-          <ProjectPopover
-            openModel={() => setModelVisible(true)}
-          ></ProjectPopover>
-          <span>用户</span>
-        </HeaderLeft>
-        <HeaderRight>
-          <Dropdown menu={{ items }}>
-            <Button type={"link"} onClick={(e) => e.preventDefault()}>
-              Hi,{user?.name}
+      <Router>
+        <PageHeader>
+          <HeaderLeft gap={true}>
+            <Button type="link" onClick={resetRoute}>
+              <SoftwareLogo width={"18rem"} color="rgb(38, 132, 255)" />
             </Button>
-          </Dropdown>
-        </HeaderRight>
-      </PageHeader>
-      <Main>
-        <Router>
+
+            <ProjectPopover></ProjectPopover>
+            <span>用户</span>
+          </HeaderLeft>
+          <HeaderRight>
+            <Dropdown menu={{ items }}>
+              <Button type={"link"} onClick={(e) => e.preventDefault()}>
+                Hi,{user?.name}
+              </Button>
+            </Dropdown>
+          </HeaderRight>
+        </PageHeader>
+        <Main>
           <Routes>
-            <Route
-              path={"/projects"}
-              element={
-                <ProjectListScreen openModel={() => setModelVisible(true)} />
-              }
-            />
+            <Route path={"/projects"} element={<ProjectListScreen />} />
             <Route
               path={"/projects/:projectId/*"}
               element={<ProjectScreen />}
             />
             <Route path="*" element={<Navigate to={"/projects"} />}></Route>
           </Routes>
-        </Router>
-        <ProjectModel
-          open={modelVisible}
-          onClose={setModelVisible}
-        ></ProjectModel>
-      </Main>
+          <ProjectModel></ProjectModel>
+        </Main>
+      </Router>
     </div>
   );
 };

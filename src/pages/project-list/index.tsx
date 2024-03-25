@@ -4,18 +4,18 @@ import { List } from "pages/project-list/list";
 import styled from "@emotion/styled";
 import { useDebounce, useDocumentTitle } from "utils";
 import { Button, Typography } from "antd";
-import { useProject } from "utils/project";
+import { useProject, useProjectModel } from "utils/project";
 import { useUsers } from "utils/user";
 import { useProjectsSearchParams } from "./util";
 import { Row } from "components/lib";
 
-export const ProjectListScreen = (props: { openModel: () => void }) => {
+export const ProjectListScreen = () => {
   // 基本类型可以放到依赖里，组件状态可以放到依赖里，非组件状态的对象不可以放到依赖里，会导致无限循环
   const [param, setParam] = useProjectsSearchParams();
   const users = useUsers();
   const debouncedParam = useDebounce(param, 200);
   const { error, data: list, isLoading, retry } = useProject(debouncedParam);
-
+  const { open } = useProjectModel();
   useDocumentTitle("项目列表", false);
 
   return (
@@ -27,7 +27,7 @@ export const ProjectListScreen = (props: { openModel: () => void }) => {
       )}
       <Row between={true}>
         <h1>项目列表</h1>
-        <Button onClick={() => props.openModel()}>创建项目</Button>
+        <Button onClick={open}>创建项目</Button>
       </Row>
       <SearchPanel users={users || []} param={param} setParam={setParam} />
       <List

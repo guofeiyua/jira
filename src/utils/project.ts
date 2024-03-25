@@ -3,6 +3,7 @@ import { useCallback, useEffect } from "react";
 import { cleanObject } from "utils";
 import { useHttp } from "./http";
 import { useAsync } from "./use-async";
+import { useUrlQueryParam } from "./url";
 
 export const useProject = (params?: Partial<Project>) => {
   const { run, ...result } = useAsync<Project[]>();
@@ -28,5 +29,24 @@ export const useEditProject = () => {
   return {
     editProject,
     ...asyncRes,
+  };
+};
+
+export const useProjectModel = () => {
+  const [{ projectCreate }, setProjectCreate] = useUrlQueryParam([
+    "projectCreate",
+  ]);
+  const open = useCallback(
+    () => setProjectCreate({ projectCreate: true }),
+    [setProjectCreate]
+  );
+  const close = useCallback(
+    () => setProjectCreate({ projectCreate: undefined }),
+    [setProjectCreate]
+  );
+  return {
+    projectModelOpen: projectCreate === "true",
+    close,
+    open,
   };
 };
